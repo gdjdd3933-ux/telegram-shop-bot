@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 # Настройка логирования
 logging.basicConfig(
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # 🔐 Ваш API-ключ бота
 TOKEN = "8550146768:AAHfgRi2WhEHeUBvXC-nJMlHLMqB47GheEc"
 
-async def start(update: Update, context: CallbackContext):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
     try:
         welcome_text = (
@@ -35,8 +35,9 @@ async def start(update: Update, context: CallbackContext):
         logger.info(f"Пользователь {update.effective_user.first_name} запустил бота")
     except Exception as e:
         logger.error(f"Ошибка в start: {e}")
+        await update.message.reply_text('❌ Произошла ошибка. Попробуйте позже.')
 
-async def catalog(update: Update, context: CallbackContext):
+async def catalog(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Показывает каталог товаров"""
     try:
         catalog_text = (
@@ -58,11 +59,11 @@ async def catalog(update: Update, context: CallbackContext):
             '💫 **Для заказа используйте команды ниже!**'
         )
         await update.message.reply_text(catalog_text, parse_mode='Markdown')
-        logger.info(f"Пользователь {update.effective_user.first_name} запросил каталог")
     except Exception as e:
         logger.error(f"Ошибка в catalog: {e}")
+        await update.message.reply_text('❌ Ошибка загрузки каталога.')
 
-async def sell_nft(update: Update, context: CallbackContext):
+async def sell_nft(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Продажа NFT"""
     try:
         nft_text = (
@@ -79,15 +80,14 @@ async def sell_nft(update: Update, context: CallbackContext):
             '4. Получите 85% от продажи\n\n'
             '💰 *Комиссия:* всего 15%\n'
             '⚡ *Выплаты:* ежедневно\n\n'
-            '📞 *Для начала продажи напишите:* @manager_account\n'
-            '🎯 *Или используйте команду:* /support'
+            '📞 *Для начала продажи напишите:* @manager_account'
         )
         await update.message.reply_text(nft_text, parse_mode='Markdown')
-        logger.info(f"Пользователь {update.effective_user.first_name} запросил продажу NFT")
     except Exception as e:
         logger.error(f"Ошибка в sell_nft: {e}")
+        await update.message.reply_text('❌ Ошибка загрузки информации.')
 
-async def ton(update: Update, context: CallbackContext):
+async def ton(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Покупка TON"""
     try:
         ton_text = (
@@ -106,14 +106,14 @@ async def ton(update: Update, context: CallbackContext):
             '✅ Мгновенная доставка\n'
             '✅ Безопасная сделка\n'
             '✅ Поддержка 24/7\n\n'
-            '🛒 *Для покупки напишите:* @ton_manager\n'
-            '📊 *Актуальный курс:* /price'
+            '🛒 *Для покупки напишите:* @ton_manager'
         )
         await update.message.reply_text(ton_text, parse_mode='Markdown')
     except Exception as e:
         logger.error(f"Ошибка в ton: {e}")
+        await update.message.reply_text('❌ Ошибка загрузки информации.')
 
-async def support(update: Update, context: CallbackContext):
+async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Связь с поддержкой"""
     try:
         support_text = (
@@ -125,14 +125,14 @@ async def support(update: Update, context: CallbackContext):
             '🛠 *Технические вопросы:*\n'
             '@tech_support - боты и сайты\n\n'
             '⏰ *Время работы:* 24/7\n'
-            '⚡ *Среднее время ответа:* 5-15 минут\n\n'
-            '🌟 *Мы ценим каждого клиента!*'
+            '⚡ *Среднее время ответа:* 5-15 минут'
         )
         await update.message.reply_text(support_text, parse_mode='Markdown')
     except Exception as e:
         logger.error(f"Ошибка в support: {e}")
+        await update.message.reply_text('❌ Ошибка загрузки поддержки.')
 
-async def help_command(update: Update, context: CallbackContext):
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Помощь по командам"""
     try:
         help_text = (
@@ -147,15 +147,12 @@ async def help_command(update: Update, context: CallbackContext):
             '1. Выберите товар в /catalog\n'
             '2. Напишите соответствующему менеджеру\n'
             '3. Уточните детали заказа\n'
-            '4. Получите товар и подтверждение\n\n'
-            '🔒 *Безопасность:*\n'
-            '✅ Escrow-сделки\n'
-            '✅ Гарантии качества\n'
-            '✅ Анонимность'
+            '4. Получите товар и подтверждение'
         )
         await update.message.reply_text(help_text, parse_mode='Markdown')
     except Exception as e:
         logger.error(f"Ошибка в help: {e}")
+        await update.message.reply_text('❌ Ошибка загрузки справки.')
 
 def main():
     """Основная функция"""
@@ -175,10 +172,7 @@ def main():
         
         # Запускаем бота
         logger.info("Бот запускается...")
-        application.run_polling(
-            allowed_updates=['message'],
-            drop_pending_updates=True
-        )
+        application.run_polling()
         
     except Exception as e:
         logger.error(f"Ошибка запуска бота: {e}")
