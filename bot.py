@@ -1,7 +1,7 @@
 import os
 import logging
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
 # Настройка логирования
 logging.basicConfig(
@@ -13,151 +13,132 @@ logger = logging.getLogger(__name__)
 # 🔐 Ваш API-ключ бота
 TOKEN = "8550146768:AAHfgRi2WhEHeUBvXC-nJMlHLMqB47GheEc"
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def start(update: Update, context):
     """Обработчик команды /start"""
     try:
         welcome_text = (
-            '🌟 **Добро пожаловать в CryptoShop!** 🌟\n\n'
+            '🌟 **Добро пожаловать в StarsShop!** 🌟\n\n'
             '✨ *Мы предлагаем:*\n'
-            '• Криптовалюты 💰\n' 
+            '• Telegram Stars ⭐\n' 
+            '• Telegram Premium 👑\n'
             '• NFT коллекции 🎨\n'
-            '• Цифровые активы 🔮\n'
-            '• Эксклюзивные товары 💎\n\n'
+            '• TON Coin 💎\n\n'
             '🚀 **Доступные команды:**\n'
             '/catalog - 📦 Посмотреть каталог\n'
-            '/sell_nft - 🎨 Продать NFT\n'
-            '/ton - 💎 Купить TON\n'
-            '/support - 📞 Поддержка\n'
-            '/help - ❓ Помощь\n\n'
-            '⚡ *Быстро, безопасно, анонимно!*'
+            '/stars - ⭐ Купить Stars\n'
+            '/premium - 👑 Купить Premium\n'
+            '/support - 📞 Поддержка'
         )
-        await update.message.reply_text(welcome_text, parse_mode='Markdown')
-        logger.info(f"Пользователь {update.effective_user.first_name} запустил бота")
+        await update.message.reply_text(welcome_text)
+        logger.info("Команда /start выполнена успешно")
     except Exception as e:
         logger.error(f"Ошибка в start: {e}")
-        await update.message.reply_text('❌ Произошла ошибка. Попробуйте позже.')
+        await update.message.reply_text('Привет! Добро пожаловать в StarsShop! 🎉')
 
-async def catalog(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def catalog(update: Update, context):
     """Показывает каталог товаров"""
     try:
         catalog_text = (
             '🏪 **Наш каталог:**\n\n'
-            '💎 **Криптовалюты:**\n'
-            '⭐ TON Coin - от 1000 руб\n'
-            '⭐ Bitcoin (BTC) - от 50000 руб\n'
-            '⭐ Ethereum (ETH) - от 30000 руб\n'
-            '⭐ USDT (TRC-20) - от 100 руб\n\n'
-            '🎨 **NFT коллекции:**\n'
-            '✨ CryptoPunks - от 50000 руб\n'
-            '✨ Bored Ape - от 100000 руб\n'
-            '✨ Art Blocks - от 20000 руб\n'
-            '✨ Rarible - от 5000 руб\n\n'
-            '📱 **Готовые продукты:**\n'
-            '🚀 Telegram Mini Apps - от 15000 руб\n'
-            '🤖 Telegram боты - от 5000 руб\n'
-            '💻 Веб-сайты - от 10000 руб\n\n'
-            '💫 **Для заказа используйте команды ниже!**'
+            '⭐ **Telegram Stars:**\n'
+            '• 100 Stars - 500 руб\n'
+            '• 500 Stars - 2000 руб\n'
+            '• 1000 Stars - 3500 руб\n'
+            '• 5000 Stars - 15000 руб\n\n'
+            '👑 **Telegram Premium:**\n'
+            '• 1 месяц - 500 руб\n'
+            '• 3 месяца - 1200 руб\n'
+            '• 12 месяцев - 3500 руб\n\n'
+            '💎 **TON Coin:**\n'
+            '• 100 TON - 10000 руб\n'
+            '• 500 TON - 45000 руб\n\n'
+            '📞 Для заказа: @manager_account'
         )
-        await update.message.reply_text(catalog_text, parse_mode='Markdown')
+        await update.message.reply_text(catalog_text)
     except Exception as e:
         logger.error(f"Ошибка в catalog: {e}")
-        await update.message.reply_text('❌ Ошибка загрузки каталога.')
+        await update.message.reply_text('Вот наш каталог! 📦')
 
-async def sell_nft(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Продажа NFT"""
+async def stars(update: Update, context):
+    """Покупка Stars"""
     try:
-        nft_text = (
-            '🎨 **Продать NFT через нашего бота:**\n\n'
-            '📋 *Требования к NFT:*\n'
-            '✅ Уникальное цифровое искусство\n'
-            '✅ Высокое качество изображения\n'
-            '✅ Права на распространение\n'
-            '✅ Метаданные и описание\n\n'
-            '💼 *Процесс продажи:*\n'
-            '1. Отправьте нам файл NFT\n'
-            '2. Укажите цену и описание\n'
-            '3. Мы разместим в нашем каталоге\n'
-            '4. Получите 85% от продажи\n\n'
-            '💰 *Комиссия:* всего 15%\n'
-            '⚡ *Выплаты:* ежедневно\n\n'
-            '📞 *Для начала продажи напишите:* @manager_account'
-        )
-        await update.message.reply_text(nft_text, parse_mode='Markdown')
-    except Exception as e:
-        logger.error(f"Ошибка в sell_nft: {e}")
-        await update.message.reply_text('❌ Ошибка загрузки информации.')
-
-async def ton(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Покупка TON"""
-    try:
-        ton_text = (
-            '💎 **Покупка TON Coin:**\n\n'
-            '🚀 *Почему TON?*\n'
-            '⭐ Официальная крипта Telegram\n'
-            '⭐ Быстрые транзакции\n'
-            '⭐ Низкие комиссии\n'
-            '⭐ Растущий потенциал\n\n'
-            '💰 *Доступные пакеты:*\n'
-            '✨ 100 TON - 10,000 руб\n'
-            '✨ 500 TON - 45,000 руб\n'
-            '✨ 1000 TON - 85,000 руб\n'
-            '✨ 5000 TON - 400,000 руб\n\n'
-            '🔒 *Гарантии:*\n'
+        stars_text = (
+            '⭐ **Покупка Telegram Stars:**\n\n'
+            'Stars - это внутренняя валюта Telegram для покупки цифровых товаров!\n\n'
+            '💰 **Пакеты Stars:**\n'
+            '✨ 100 Stars - 500 руб\n'
+            '✨ 500 Stars - 2000 руб\n'
+            '✨ 1000 Stars - 3500 руб\n'
+            '✨ 5000 Stars - 15000 руб\n\n'
+            '⚡ **Преимущества:**\n'
             '✅ Мгновенная доставка\n'
-            '✅ Безопасная сделка\n'
+            '✅ Официальные Stars\n'
             '✅ Поддержка 24/7\n\n'
-            '🛒 *Для покупки напишите:* @ton_manager'
+            '🛒 Для покупки: @stars_manager'
         )
-        await update.message.reply_text(ton_text, parse_mode='Markdown')
+        await update.message.reply_text(stars_text)
     except Exception as e:
-        logger.error(f"Ошибка в ton: {e}")
-        await update.message.reply_text('❌ Ошибка загрузки информации.')
+        logger.error(f"Ошибка в stars: {e}")
+        await update.message.reply_text('Информация о Stars ⭐')
 
-async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def premium(update: Update, context):
+    """Покупка Premium"""
+    try:
+        premium_text = (
+            '👑 **Telegram Premium:**\n\n'
+            'Получите премиум возможности Telegram!\n\n'
+            '🎁 **Что входит:**\n'
+            '• Увеличенные лимиты\n'
+            '• Эксклюзивные стикеры\n'
+            '• Быстрые загрузки\n'
+            '• Премиум значек\n\n'
+            '💳 **Тарифы:**\n'
+            '👑 1 месяц - 500 руб\n'
+            '👑 3 месяца - 1200 руб\n'
+            '👑 12 месяцев - 3500 руб\n\n'
+            '📞 Для активации: @premium_manager'
+        )
+        await update.message.reply_text(premium_text)
+    except Exception as e:
+        logger.error(f"Ошибка в premium: {e}")
+        await update.message.reply_text('Информация о Premium 👑')
+
+async def support(update: Update, context):
     """Связь с поддержкой"""
     try:
         support_text = (
-            '📞 **Служба поддержки CryptoShop**\n\n'
-            '💎 *По вопросам покупки:*\n'
-            '@crypto_manager - криптовалюты\n'
-            '@nft_manager - NFT коллекции\n'
-            '@ton_manager - TON Coin\n\n'
-            '🛠 *Технические вопросы:*\n'
-            '@tech_support - боты и сайты\n\n'
-            '⏰ *Время работы:* 24/7\n'
-            '⚡ *Среднее время ответа:* 5-15 минут'
+            '📞 **Служба поддержки StarsShop:**\n\n'
+            '👨‍💼 Менеджеры:\n'
+            '@stars_manager - Stars\n'
+            '@premium_manager - Premium\n'
+            '@crypto_manager - TON\n\n'
+            '⏰ Работаем 24/7\n'
+            '⚡ Ответ за 5-15 минут\n\n'
+            '🌟 Мы всегда на связи!'
         )
-        await update.message.reply_text(support_text, parse_mode='Markdown')
+        await update.message.reply_text(support_text)
     except Exception as e:
         logger.error(f"Ошибка в support: {e}")
-        await update.message.reply_text('❌ Ошибка загрузки поддержки.')
+        await update.message.reply_text('Напишите @manager_account')
 
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Помощь по командам"""
+async def handle_message(update: Update, context):
+    """Обработка обычных сообщений"""
     try:
-        help_text = (
-            '❓ **Доступные команды:**\n\n'
-            '🎯 *Основные:*\n'
-            '/start - начать работу\n'
-            '/catalog - посмотреть каталог\n'
-            '/ton - купить TON Coin\n'
-            '/sell_nft - продать NFT\n'
-            '/support - связаться с поддержкой\n\n'
-            '💼 *Процесс заказа:*\n'
-            '1. Выберите товар в /catalog\n'
-            '2. Напишите соответствующему менеджеру\n'
-            '3. Уточните детали заказа\n'
-            '4. Получите товар и подтверждение'
+        await update.message.reply_text(
+            'Используйте команды:\n'
+            '/start - начало работы\n'
+            '/catalog - каталог\n'
+            '/stars - купить Stars\n'
+            '/premium - купить Premium\n'
+            '/support - поддержка'
         )
-        await update.message.reply_text(help_text, parse_mode='Markdown')
     except Exception as e:
-        logger.error(f"Ошибка в help: {e}")
-        await update.message.reply_text('❌ Ошибка загрузки справки.')
+        logger.error(f"Ошибка в handle_message: {e}")
 
 def main():
     """Основная функция"""
     try:
-        logger.info("Запуск CryptoShop бота...")
+        logger.info("Запуск бота StarsShop...")
         
         # Создаем приложение
         application = Application.builder().token(TOKEN).build()
@@ -165,14 +146,17 @@ def main():
         # Добавляем обработчики команд
         application.add_handler(CommandHandler("start", start))
         application.add_handler(CommandHandler("catalog", catalog))
-        application.add_handler(CommandHandler("sell_nft", sell_nft))
-        application.add_handler(CommandHandler("ton", ton))
+        application.add_handler(CommandHandler("stars", stars))
+        application.add_handler(CommandHandler("premium", premium))
         application.add_handler(CommandHandler("support", support))
-        application.add_handler(CommandHandler("help", help_command))
+        
+        # Обработка текстовых сообщений
+        application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
         
         # Запускаем бота
         logger.info("Бот запускается...")
         application.run_polling()
+        logger.info("Бот успешно запущен!")
         
     except Exception as e:
         logger.error(f"Ошибка запуска бота: {e}")
