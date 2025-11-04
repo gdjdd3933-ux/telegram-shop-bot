@@ -16,13 +16,22 @@ TOKEN = "8550146768:AAHfgRi2WhEHeUBvXC-nJMlHLMqB47GheEc"
 async def start(update: Update, context: CallbackContext):
     """Обработчик команды /start"""
     try:
-        await update.message.reply_text(
-            '🛍️ Добро пожаловать в магазин!\n\n'
-            'Используйте команды:\n'
-            '/catalog - посмотреть товары\n'
-            '/support - связаться с нами\n'
-            '/help - помощь'
+        welcome_text = (
+            '🌟 **Добро пожаловать в CryptoShop!** 🌟\n\n'
+            '✨ *Мы предлагаем:*\n'
+            '• Криптовалюты 💰\n' 
+            '• NFT коллекции 🎨\n'
+            '• Цифровые активы 🔮\n'
+            '• Эксклюзивные товары 💎\n\n'
+            '🚀 **Доступные команды:**\n'
+            '/catalog - 📦 Посмотреть каталог\n'
+            '/sell_nft - 🎨 Продать NFT\n'
+            '/ton - 💎 Купить TON\n'
+            '/support - 📞 Поддержка\n'
+            '/help - ❓ Помощь\n\n'
+            '⚡ *Быстро, безопасно, анонимно!*'
         )
+        await update.message.reply_text(welcome_text, parse_mode='Markdown')
         logger.info(f"Пользователь {update.effective_user.first_name} запустил бота")
     except Exception as e:
         logger.error(f"Ошибка в start: {e}")
@@ -32,30 +41,94 @@ async def catalog(update: Update, context: CallbackContext):
     try:
         catalog_text = (
             '🏪 **Наш каталог:**\n\n'
-            '📱 iPhone 13 - 1000 руб\n'
-            '💻 MacBook Air - 2000 руб\n'
-            '⌚ Apple Watch - 500 руб\n'
-            '🎧 AirPods Pro - 300 руб\n\n'
-            '💎 **Для заказа напишите:** @manager_account\n'
-            '📞 **Или используйте команду:** /support'
+            '💎 **Криптовалюты:**\n'
+            '⭐ TON Coin - от 1000 руб\n'
+            '⭐ Bitcoin (BTC) - от 50000 руб\n'
+            '⭐ Ethereum (ETH) - от 30000 руб\n'
+            '⭐ USDT (TRC-20) - от 100 руб\n\n'
+            '🎨 **NFT коллекции:**\n'
+            '✨ CryptoPunks - от 50000 руб\n'
+            '✨ Bored Ape - от 100000 руб\n'
+            '✨ Art Blocks - от 20000 руб\n'
+            '✨ Rarible - от 5000 руб\n\n'
+            '📱 **Готовые продукты:**\n'
+            '🚀 Telegram Mini Apps - от 15000 руб\n'
+            '🤖 Telegram боты - от 5000 руб\n'
+            '💻 Веб-сайты - от 10000 руб\n\n'
+            '💫 **Для заказа используйте команды ниже!**'
         )
         await update.message.reply_text(catalog_text, parse_mode='Markdown')
         logger.info(f"Пользователь {update.effective_user.first_name} запросил каталог")
     except Exception as e:
         logger.error(f"Ошибка в catalog: {e}")
 
+async def sell_nft(update: Update, context: CallbackContext):
+    """Продажа NFT"""
+    try:
+        nft_text = (
+            '🎨 **Продать NFT через нашего бота:**\n\n'
+            '📋 *Требования к NFT:*\n'
+            '✅ Уникальное цифровое искусство\n'
+            '✅ Высокое качество изображения\n'
+            '✅ Права на распространение\n'
+            '✅ Метаданные и описание\n\n'
+            '💼 *Процесс продажи:*\n'
+            '1. Отправьте нам файл NFT\n'
+            '2. Укажите цену и описание\n'
+            '3. Мы разместим в нашем каталоге\n'
+            '4. Получите 85% от продажи\n\n'
+            '💰 *Комиссия:* всего 15%\n'
+            '⚡ *Выплаты:* ежедневно\n\n'
+            '📞 *Для начала продажи напишите:* @manager_account\n'
+            '🎯 *Или используйте команду:* /support'
+        )
+        await update.message.reply_text(nft_text, parse_mode='Markdown')
+        logger.info(f"Пользователь {update.effective_user.first_name} запросил продажу NFT")
+    except Exception as e:
+        logger.error(f"Ошибка в sell_nft: {e}")
+
+async def ton(update: Update, context: CallbackContext):
+    """Покупка TON"""
+    try:
+        ton_text = (
+            '💎 **Покупка TON Coin:**\n\n'
+            '🚀 *Почему TON?*\n'
+            '⭐ Официальная крипта Telegram\n'
+            '⭐ Быстрые транзакции\n'
+            '⭐ Низкие комиссии\n'
+            '⭐ Растущий потенциал\n\n'
+            '💰 *Доступные пакеты:*\n'
+            '✨ 100 TON - 10,000 руб\n'
+            '✨ 500 TON - 45,000 руб\n'
+            '✨ 1000 TON - 85,000 руб\n'
+            '✨ 5000 TON - 400,000 руб\n\n'
+            '🔒 *Гарантии:*\n'
+            '✅ Мгновенная доставка\n'
+            '✅ Безопасная сделка\n'
+            '✅ Поддержка 24/7\n\n'
+            '🛒 *Для покупки напишите:* @ton_manager\n'
+            '📊 *Актуальный курс:* /price'
+        )
+        await update.message.reply_text(ton_text, parse_mode='Markdown')
+    except Exception as e:
+        logger.error(f"Ошибка в ton: {e}")
+
 async def support(update: Update, context: CallbackContext):
     """Связь с поддержкой"""
     try:
         support_text = (
-            '📞 **Служба поддержки**\n\n'
-            '💬 По вопросам заказов: @manager_account\n'
-            '🛠 Технические вопросы: @tech_support\n'
-            '⏰ Время работы: 10:00 - 20:00\n\n'
-            'Мы ответим в течение 15 минут!'
+            '📞 **Служба поддержки CryptoShop**\n\n'
+            '💎 *По вопросам покупки:*\n'
+            '@crypto_manager - криптовалюты\n'
+            '@nft_manager - NFT коллекции\n'
+            '@ton_manager - TON Coin\n\n'
+            '🛠 *Технические вопросы:*\n'
+            '@tech_support - боты и сайты\n\n'
+            '⏰ *Время работы:* 24/7\n'
+            '⚡ *Среднее время ответа:* 5-15 минут\n\n'
+            '🌟 *Мы ценим каждого клиента!*'
         )
         await update.message.reply_text(support_text, parse_mode='Markdown')
-        logger.info(f"Пользователь {update.effective_user.first_name} запросил поддержку")
     except Exception as e:
         logger.error(f"Ошибка в support: {e}")
 
@@ -64,14 +137,21 @@ async def help_command(update: Update, context: CallbackContext):
     try:
         help_text = (
             '❓ **Доступные команды:**\n\n'
+            '🎯 *Основные:*\n'
             '/start - начать работу\n'
-            '/catalog - посмотреть товары\n'
-            '/support - связаться с поддержкой\n'
-            '/help - эта справка\n\n'
-            '🛒 **Как сделать заказ:**\n'
-            '1. Посмотрите товары в /catalog\n'
-            '2. Напишите нам через /support\n'
-            '3. Уточните детали заказа'
+            '/catalog - посмотреть каталог\n'
+            '/ton - купить TON Coin\n'
+            '/sell_nft - продать NFT\n'
+            '/support - связаться с поддержкой\n\n'
+            '💼 *Процесс заказа:*\n'
+            '1. Выберите товар в /catalog\n'
+            '2. Напишите соответствующему менеджеру\n'
+            '3. Уточните детали заказа\n'
+            '4. Получите товар и подтверждение\n\n'
+            '🔒 *Безопасность:*\n'
+            '✅ Escrow-сделки\n'
+            '✅ Гарантии качества\n'
+            '✅ Анонимность'
         )
         await update.message.reply_text(help_text, parse_mode='Markdown')
     except Exception as e:
@@ -80,7 +160,7 @@ async def help_command(update: Update, context: CallbackContext):
 def main():
     """Основная функция"""
     try:
-        logger.info("Запуск бота...")
+        logger.info("Запуск CryptoShop бота...")
         
         # Создаем приложение
         application = Application.builder().token(TOKEN).build()
@@ -88,12 +168,17 @@ def main():
         # Добавляем обработчики команд
         application.add_handler(CommandHandler("start", start))
         application.add_handler(CommandHandler("catalog", catalog))
+        application.add_handler(CommandHandler("sell_nft", sell_nft))
+        application.add_handler(CommandHandler("ton", ton))
         application.add_handler(CommandHandler("support", support))
         application.add_handler(CommandHandler("help", help_command))
         
         # Запускаем бота
         logger.info("Бот запускается...")
-        application.run_polling()
+        application.run_polling(
+            allowed_updates=['message'],
+            drop_pending_updates=True
+        )
         
     except Exception as e:
         logger.error(f"Ошибка запуска бота: {e}")
